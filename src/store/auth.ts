@@ -1,9 +1,9 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { ref, set } from 'firebase/database'
+// import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+// import { ref, set } from 'firebase/database'
 import { produce } from 'immer'
-import { auth, database } from 'lib/firebase'
+// import { auth, database } from 'lib/firebase'
 import toast from 'react-hot-toast'
-import { random } from 'utils/random'
+// import { random } from 'utils/random'
 import create from 'zustand'
 
 interface User {
@@ -11,6 +11,8 @@ interface User {
   name: string
   email: string
   profilePic?: string
+  balance: number,
+  maxBet: number
 }
 
 interface Wallet {
@@ -22,13 +24,13 @@ interface State {
   wallet: Wallet
   isAuth: boolean
   signIn: (token: string) => Promise<void>
-  signOut: () => Promise<void>
+  // signOut: () => Promise<void>
   setUser: (user: User) => void
   isAuthLoading: boolean
   isWalletLoading: boolean
   setBalance: (balance: number) => void
-  incrementBalance: (amount: number) => Promise<void>
-  decrementBalance: (amount: number) => Promise<void>
+  incrementBalance: (token: string, amount: number) => Promise<void>
+  decrementBalance: (token: string, amount: number) => Promise<void>
 }
 
 const getLimitMessage = (
@@ -64,7 +66,9 @@ function clearUser() {
 const userInitialState: User = {
   id: '',
   name: '',
-  email: ''
+  email: '',
+  balance: 0,
+  maxBet: 0
 }
 
 const walletInitialState: Wallet = {
@@ -90,28 +94,64 @@ export const useAuthStore = create<State>((setState, getState) => ({
       console.error('setBalanceError', error)
     }
   },
-  incrementBalance: async (amount: number) => {
+  incrementBalance: async (token: string, amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
-      await getState().setBalanceOnDatabase(getState().wallet.balance + amount)
-      setState(state => ({ ...state, isWalletLoading: false }))
+      // await getState().setBalanceOnDatabase(getState().wallet.balance + amount)
+      const response = await fetch('/api/insertPlayerTransaction', {
+        method: 'POST',
+        body: JSON.stringify({ token, amount }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      console.log("🚀 ~ incrementBalance: ~ response:", response)
+      setState(state => ({ ...state, isWalletLoading: false, user: { ...state.user, balance: state.user.balance + amount } }))
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('incrementBalanceError', error)
     }
   },
-  decrementBalance: async (amount: number) => {
+  decrementBalance: async (token: string, amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
-      await getState().setBalanceOnDatabase(getState().wallet.balance - amount)
-      setState(state => ({ ...state, isWalletLoading: false }))
+      // await getState().setBalanceOnDatabase(getState().wallet.balance - amount)
+      const response = await fetch('/api/insertPlayerTransaction', {
+        method: 'POST',
+        body: JSON.stringify({ token, amount }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      setState(state => ({ ...state, isWalletLoading: false, user: { ...state.user, balance: state.user.balance - amount } }))
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('decrementBalanceError', error)
     }
   },
-  signIn: async token => {
+  signIn: async (token: string) => {
+    if (!token) return
     try {
+      setState(state => ({ ...state, isAuthLoading: true }))
+      try {
+        const response = await fetch(`/api/startGame?token=${token}`, {
+          method: 'POST'
+        })
+        const user = await response.json()
+        storeUser(user)
+        setState(
+          produce<State>(state => {
+            state.user = user
+            state.isAuth = true
+            state.isAuthLoading = false
+            state.wallet.balance = user.balance
+          })
+        )
+      } catch (error) {
+        console.error('Error getting player balance:', error)
+        // return null
+      }
+      setState(state => ({ ...state, isLoading: false }))
       // setState(state => ({ ...state, isAuthLoading: true }))
       // const newUser = {
       //   id: '1',
@@ -129,82 +169,76 @@ export const useAuthStore = create<State>((setState, getState) => ({
       //   })
       // )
       // setState(state => ({ ...state, isLoading: false }))
-
-      setState(state => ({ ...state, isAuthLoading: true }))
-      const url = process.env.BET_MASTER_API_URL + '/PlayerExt/GetPlayerInfo'
-
-      try {
-        // const response = await fetch('post', url, null, { headers: { Authorization: `Token ${token}` } });
-        // make post request
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Token ${token}`
-          }
-        })
-        console.log('🚀 ~ response:', response)
-        const {
-          IsMinesMaxDailyWinLimitReached,
-          IsMinesMaxDailyLossLimitReached,
-          IsMinesMaxWeeklyWinLimitReached,
-          IsMinesMaxWeeklyLossLimitReached,
-          MaxBetMines: maxBet
-        } = response.data
-
-        const isLimitReached =
-          IsMinesMaxDailyWinLimitReached ||
-          IsMinesMaxDailyLossLimitReached ||
-          IsMinesMaxWeeklyWinLimitReached ||
-          IsMinesMaxWeeklyLossLimitReached
-
-        const user = {
-          balance: response.data.Available,
-          player: response.data.Player,
-          isLimitReached,
-          maxBet,
-          limitReachedMessage: getLimitMessage(
-            IsMinesMaxDailyWinLimitReached,
-            IsMinesMaxDailyLossLimitReached,
-            IsMinesMaxWeeklyWinLimitReached,
-            IsMinesMaxWeeklyLossLimitReached
-          )
-        }
-        storeUser(user)
-        setState(
-          produce<State>(state => {
-            state.user = user
-            state.isAuth = true
-            state.isAuthLoading = false
-            state.wallet.balance = 100000
-          })
-        )
-      } catch (error) {
-        console.error('Error getting player balance:', error)
-        return null
-      }
+      // setState(state => ({ ...state, isAuthLoading: true }))
+      // const url = process.env.BET_MASTER_API_URL + '/PlayerExt/GetPlayerInfo'
+      // try {
+      //   const response = await fetch(url, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Token ${token}`
+      //     }
+      //   })
+      //   console.log('🚀 ~ response:', response)
+      //   const {
+      //     IsMinesMaxDailyWinLimitReached,
+      //     IsMinesMaxDailyLossLimitReached,
+      //     IsMinesMaxWeeklyWinLimitReached,
+      //     IsMinesMaxWeeklyLossLimitReached,
+      //     MaxBetMines: maxBet
+      //   } = response.data
+      //   const isLimitReached =
+      //     IsMinesMaxDailyWinLimitReached ||
+      //     IsMinesMaxDailyLossLimitReached ||
+      //     IsMinesMaxWeeklyWinLimitReached ||
+      //     IsMinesMaxWeeklyLossLimitReached
+      //   const user = {
+      //     balance: response.data.Available,
+      //     player: response.data.Player,
+      //     isLimitReached,
+      //     maxBet,
+      //     limitReachedMessage: getLimitMessage(
+      //       IsMinesMaxDailyWinLimitReached,
+      //       IsMinesMaxDailyLossLimitReached,
+      //       IsMinesMaxWeeklyWinLimitReached,
+      //       IsMinesMaxWeeklyLossLimitReached
+      //     )
+      //   }
+      //   storeUser(user)
+      //   setState(
+      //     produce<State>(state => {
+      //       state.user = user
+      //       state.isAuth = true
+      //       state.isAuthLoading = false
+      //       state.wallet.balance = 100000
+      //     })
+      //   )
+      // } catch (error) {
+      //   console.error('Error getting player balance:', error)
+      //   return null
+      // }
     } catch (error) {
       toast.error('Ocorreu um erro ao fazer login')
       console.error('signInError', error)
     }
   },
-  signOut: async () => {
-    try {
-      setState(state => ({ ...state, isAuthLoading: true }))
-      await auth.signOut()
-      clearUser()
-      setState(
-        produce<State>(state => {
-          state.user = userInitialState
-          state.isAuth = false
-          state.isAuthLoading = false
-        })
-      )
-    } catch (error) {
-      toast.error('Ocorreu um erro ao fazer logout')
-      console.error('signOutError', error)
-    }
-  },
+  // signOut: async () => {
+  //   try {
+  //     setState(state => ({ ...state, isAuthLoading: true }))
+  //     await auth.signOut()
+  //     clearUser()
+  //     setState(
+  //       produce<State>(state => {
+  //         state.user = userInitialState
+  //         state.isAuth = false
+  //         state.isAuthLoading = false
+  //       })
+  //     )
+  //   } catch (error) {
+  //     toast.error('Ocorreu um erro ao fazer logout')
+  //     console.error('signOutError', error)
+  //   }
+  // },
   setUser: (user: User) => {
     try {
       setState(
