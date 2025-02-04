@@ -2,18 +2,18 @@ import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const getLimitMessage = (
-  isMinesMaxDailyWinLimitReached: boolean,
-  isMinesMaxDailyLossLimitReached: boolean,
-  isMinesMaxWeeklyWinLimitReached: boolean,
-  isMinesMaxWeeklyLossLimitReached: boolean
+  isPlinkoMaxDailyWinLimitReached: boolean,
+  isPlinkoMaxDailyLossLimitReached: boolean,
+  isPlinkoMaxWeeklyWinLimitReached: boolean,
+  isPlinkoMaxWeeklyLossLimitReached: boolean
 ) => {
-  if (isMinesMaxDailyWinLimitReached) {
+  if (isPlinkoMaxDailyWinLimitReached) {
     return 'Max Daily Win Limit'
-  } else if (isMinesMaxDailyLossLimitReached) {
+  } else if (isPlinkoMaxDailyLossLimitReached) {
     return 'Max Daily Loss Limit'
-  } else if (isMinesMaxWeeklyWinLimitReached) {
+  } else if (isPlinkoMaxWeeklyWinLimitReached) {
     return 'Max Weekly Win Limit'
-  } else if (isMinesMaxWeeklyLossLimitReached) {
+  } else if (isPlinkoMaxWeeklyLossLimitReached) {
     return 'Max Weekly Loss Limit'
   }
   return ''
@@ -27,27 +27,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { Authorization: `Token ${token}` }
     })
     const {
-      IsMinesMaxDailyWinLimitReached,
-      IsMinesMaxDailyLossLimitReached,
-      IsMinesMaxWeeklyWinLimitReached,
-      IsMinesMaxWeeklyLossLimitReached,
-      MaxBetMines: maxBet
+      IsPlinkoMaxDailyWinLimitReached,
+      IsPlinkoMaxDailyLossLimitReached,
+      IsPlinkoMaxWeeklyWinLimitReached,
+      IsPlinkoMaxWeeklyLossLimitReached,
+      MaxBetPlinko: maxBet
     } = response.data
     const isLimitReached =
-      IsMinesMaxDailyWinLimitReached ||
-      IsMinesMaxDailyLossLimitReached ||
-      IsMinesMaxWeeklyWinLimitReached ||
-      IsMinesMaxWeeklyLossLimitReached
+      IsPlinkoMaxDailyWinLimitReached ||
+      IsPlinkoMaxDailyLossLimitReached ||
+      IsPlinkoMaxWeeklyWinLimitReached ||
+      IsPlinkoMaxWeeklyLossLimitReached
     const user = {
       balance: response.data.Available,
       player: response.data.Player,
       isLimitReached,
       maxBet,
       limitReachedMessage: getLimitMessage(
-        IsMinesMaxDailyWinLimitReached,
-        IsMinesMaxDailyLossLimitReached,
-        IsMinesMaxWeeklyWinLimitReached,
-        IsMinesMaxWeeklyLossLimitReached
+        IsPlinkoMaxDailyWinLimitReached,
+        IsPlinkoMaxDailyLossLimitReached,
+        IsPlinkoMaxWeeklyWinLimitReached,
+        IsPlinkoMaxWeeklyLossLimitReached
       )
     }
     res.status(200).json(user)
