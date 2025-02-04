@@ -1,6 +1,5 @@
-import { Coin, CurrencyDollarSimple, Smiley } from 'phosphor-react'
+import { CurrencyDollarSimple } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuthStore } from 'store/auth'
 
 import { LinesType } from '../../@types'
@@ -28,10 +27,10 @@ export function BetActions({
   }
 
   function handleChangeBetValue(e: ChangeEvent<HTMLInputElement>) {
-    if (!isAuth || isLoading) return
+    // if (!isAuth || isLoading) return
     e.preventDefault()
     const value = +e.target.value
-    const newBetValue = value >= currentBalance ? currentBalance : value
+    const newBetValue = value // >= currentBalance ? currentBalance : value
     setBetValue(newBetValue)
   }
 
@@ -79,9 +78,9 @@ export function BetActions({
   }
 
   return (
-    <div className="relative h-1/2 w-full flex-1 py-8 px-4">
+    <div className="relative h-1/2 w-full flex-1 px-4 py-8">
       <span className="absolute left-4 top-0 mx-auto text-xs font-bold text-text md:text-base">
-        *bolas em jogo {inGameBallsCount}/15
+        *balls in game {inGameBallsCount}/15
       </span>
 
       <div className="flex h-full flex-col gap-4 rounded-md bg-primary p-4 text-text md:justify-between">
@@ -89,7 +88,7 @@ export function BetActions({
           <div className="flex flex-row items-stretch gap-1 md:flex-col">
             <div className="w-full text-sm font-bold md:text-base">
               <div className="flex flex-1 items-stretch justify-between">
-                <span>Valor da aposta</span>
+                <span>Enter bet</span>
                 <div className="flex items-center gap-1">
                   <div className="rounded-full bg-purpleDark p-0.5">
                     <CurrencyDollarSimple weight="bold" />
@@ -108,13 +107,13 @@ export function BetActions({
                 />
                 <button
                   onClick={handleHalfBet}
-                  className="relative border-2 border-transparent bg-secondary p-2.5 px-3 transition-colors after:absolute after:top-[calc(50%_-_8px)] after:right-0 after:h-4 after:w-0.5 after:rounded-lg after:bg-background after:content-[''] hover:bg-secondary/80 focus:border-purple focus:outline-none md:p-2"
+                  className="relative border-2 border-transparent bg-secondary p-2.5 px-3 transition-colors after:absolute after:right-0 after:top-[calc(50%_-_8px)] after:h-4 after:w-0.5 after:rounded-lg after:bg-background after:content-[''] hover:bg-secondary/80 focus:border-purple focus:outline-none md:p-2"
                 >
                   ½
                 </button>
                 <button
                   onClick={handleDoubleBet}
-                  className="relative border-2 border-transparent bg-secondary p-2.5 px-3 transition-colors after:absolute after:top-[calc(50%_-_8px)] after:right-0 after:h-4 after:w-0.5 after:rounded-lg after:bg-background after:content-[''] hover:bg-secondary/80 focus:border-purple focus:outline-none md:p-2"
+                  className="relative border-2 border-transparent bg-secondary p-2.5 px-3 transition-colors after:absolute after:right-0 after:top-[calc(50%_-_8px)] after:h-4 after:w-0.5 after:rounded-lg after:bg-background after:content-[''] hover:bg-secondary/80 focus:border-purple focus:outline-none md:p-2"
                 >
                   2x
                 </button>
@@ -139,12 +138,12 @@ export function BetActions({
             disabled={inGameBallsCount > 0}
             onChange={handleChangeLines}
             defaultValue={16}
-            className="w-full rounded-md border-2 border-secondary bg-background py-2 px-4 font-bold transition-all placeholder:font-bold placeholder:text-text focus:border-purple focus:outline-none disabled:line-through disabled:opacity-80"
+            className="w-full rounded-md border-2 border-secondary bg-background px-4 py-2 font-bold transition-all placeholder:font-bold placeholder:text-text focus:border-purple focus:outline-none disabled:line-through disabled:opacity-80"
             id="lines"
           >
             {linesOptions.map(line => (
               <option key={line} value={line}>
-                {line} Linhas
+                {line} Lines
               </option>
             ))}
           </select>
@@ -154,23 +153,8 @@ export function BetActions({
           disabled={isLoading}
           className="hidden rounded-md bg-purple px-6 py-5 font-bold leading-none text-background transition-colors hover:bg-purpleDark focus:outline-none focus:ring-1 focus:ring-purple focus:ring-offset-1 focus:ring-offset-primary disabled:bg-gray-500 md:visible md:block"
         >
-          Apostar
+          Start
         </button>
-        <div className="flex flex-col items-center gap-4 text-sm font-bold text-text md:items-start lg:absolute lg:-bottom-20 lg:left-4">
-          <span>
-            Se se divertiu jogando e quiser ajudar de alguma forma,
-            <span className="flex items-center gap-2">
-              doe 1 real pra o desenvolvedor clicando abaixo.
-              <Smiley weight="fill" />
-            </span>
-          </span>
-          <Link
-            to="/contribute"
-            className="flex items-center gap-2 rounded-md bg-background p-2 font-bold transition-colors hover:bg-primary/50 lg:bg-primary"
-          >
-            DOAR 1 REAL <Coin />
-          </Link>
-        </div>
       </div>
     </div>
   )

@@ -21,16 +21,32 @@ interface State {
   user: User
   wallet: Wallet
   isAuth: boolean
-  signIn: () => Promise<void>
+  signIn: (token: string) => Promise<void>
   signOut: () => Promise<void>
   setUser: (user: User) => void
   isAuthLoading: boolean
   isWalletLoading: boolean
   setBalance: (balance: number) => void
-  setBalanceOnDatabase: (balance: number) => Promise<void>
   incrementBalance: (amount: number) => Promise<void>
   decrementBalance: (amount: number) => Promise<void>
-  redeemGift: () => Promise<void>
+}
+
+const getLimitMessage = (
+  isMinesMaxDailyWinLimitReached: boolean,
+  isMinesMaxDailyLossLimitReached: boolean,
+  isMinesMaxWeeklyWinLimitReached: boolean,
+  isMinesMaxWeeklyLossLimitReached: boolean
+) => {
+  if (isMinesMaxDailyWinLimitReached) {
+    return 'Max Daily Win Limit'
+  } else if (isMinesMaxDailyLossLimitReached) {
+    return 'Max Daily Loss Limit'
+  } else if (isMinesMaxWeeklyWinLimitReached) {
+    return 'Max Weekly Win Limit'
+  } else if (isMinesMaxWeeklyLossLimitReached) {
+    return 'Max Weekly Loss Limit'
+  }
+  return ''
 }
 
 function storeUser(user: User) {
@@ -74,43 +90,6 @@ export const useAuthStore = create<State>((setState, getState) => ({
       console.error('setBalanceError', error)
     }
   },
-  setBalanceOnDatabase: async (balance: number) => {
-    try {
-      if (getState().isAuth) {
-        const walletRef = ref(database, 'wallet/' + getState().user.id)
-        await set(walletRef, {
-          currentBalance: balance,
-          user: {
-            uid: getState().user.id,
-            name: localStorage.getItem('name'),
-            profilePic: localStorage.getItem('profilePic')
-          }
-        })
-      }
-    } catch (error) {
-      toast.error('Ocorreu um erro ao atualizar o saldo')
-      console.error('setBalanceOnDatabaseError', error)
-    }
-  },
-  redeemGift: async () => {
-    try {
-      const balance = getState().wallet.balance
-      if (balance >= 10) {
-        toast.remove()
-        toast.error(
-          'Você precisa ter o saldo menor abaixo de 10 para resgatar o presente'
-        )
-        return
-      }
-      const newBalance = random(10, 300)
-      await getState().setBalanceOnDatabase(newBalance)
-      toast.success('Presente resgatado com sucesso')
-      return
-    } catch (error) {
-      toast.error('Ocorreu um erro ao resgatar o presente')
-      console.error('redeemGiftError', error)
-    }
-  },
   incrementBalance: async (amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
@@ -131,24 +110,79 @@ export const useAuthStore = create<State>((setState, getState) => ({
       console.error('decrementBalanceError', error)
     }
   },
-  signIn: async () => {
+  signIn: async token => {
     try {
+      // setState(state => ({ ...state, isAuthLoading: true }))
+      // const newUser = {
+      //   id: '1',
+      //   name: 'Testv',
+      //   email: 'testv@email.com',
+      //   profilePic: ''
+      // }
+      // // storeUser(newUser)
+      // setState(
+      //   produce<State>(state => {
+      //     state.user = newUser
+      //     state.isAuth = true
+      //     state.isAuthLoading = false
+      //     state.wallet.balance = 100000
+      //   })
+      // )
+      // setState(state => ({ ...state, isLoading: false }))
+
       setState(state => ({ ...state, isAuthLoading: true }))
-      const provider = new GoogleAuthProvider()
-      const { user } = await signInWithPopup(auth, provider)
-      const { uid: id, displayName: name, photoURL: profilePic, email } = user
-      if (name && email) {
-        const newUser = { id, name, email, profilePic: profilePic || '' }
-        storeUser(newUser)
+      const url = process.env.BET_MASTER_API_URL + '/PlayerExt/GetPlayerInfo'
+
+      try {
+        // const response = await fetch('post', url, null, { headers: { Authorization: `Token ${token}` } });
+        // make post request
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`
+          }
+        })
+        console.log('🚀 ~ response:', response)
+        const {
+          IsMinesMaxDailyWinLimitReached,
+          IsMinesMaxDailyLossLimitReached,
+          IsMinesMaxWeeklyWinLimitReached,
+          IsMinesMaxWeeklyLossLimitReached,
+          MaxBetMines: maxBet
+        } = response.data
+
+        const isLimitReached =
+          IsMinesMaxDailyWinLimitReached ||
+          IsMinesMaxDailyLossLimitReached ||
+          IsMinesMaxWeeklyWinLimitReached ||
+          IsMinesMaxWeeklyLossLimitReached
+
+        const user = {
+          balance: response.data.Available,
+          player: response.data.Player,
+          isLimitReached,
+          maxBet,
+          limitReachedMessage: getLimitMessage(
+            IsMinesMaxDailyWinLimitReached,
+            IsMinesMaxDailyLossLimitReached,
+            IsMinesMaxWeeklyWinLimitReached,
+            IsMinesMaxWeeklyLossLimitReached
+          )
+        }
+        storeUser(user)
         setState(
           produce<State>(state => {
-            state.user = newUser
+            state.user = user
             state.isAuth = true
             state.isAuthLoading = false
+            state.wallet.balance = 100000
           })
         )
+      } catch (error) {
+        console.error('Error getting player balance:', error)
+        return null
       }
-      setState(state => ({ ...state, isLoading: false }))
     } catch (error) {
       toast.error('Ocorreu um erro ao fazer login')
       console.error('signInError', error)

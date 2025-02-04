@@ -33,7 +33,7 @@ export function Navbar() {
         </Link>
         {isAuth && (
           <div className="flex items-stretch gap-4">
-            {currentBalance < 10 && (
+            {/* {currentBalance < 10 && (
               <Link
                 replace
                 to={inGameBallsCount ? '#!' : '/gifts'}
@@ -42,16 +42,8 @@ export function Navbar() {
               >
                 <Gift size="32" weight="fill" />
               </Link>
-            )}
-
+            )} */}
             <WalletCard balance={currentBalance} showFormatted />
-            <button
-              title="Sair"
-              onClick={handleSignOut}
-              className="rounded-md bg-purpleDark px-4 text-text hover:bg-purple"
-            >
-              <SignOut weight="bold" />
-            </button>
           </div>
         )}
       </div>
