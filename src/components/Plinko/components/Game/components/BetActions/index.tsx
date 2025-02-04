@@ -66,7 +66,7 @@ export function BetActions({
 
   function handleMaxBet() {
     if (!isAuth || isLoading) return
-    setBetValue(currentBalance)
+    setBetValue(Math.max(0, Math.min(maxBet, currentBalance)))
   }
 
   async function handleRunBet() {
