@@ -31,7 +31,7 @@ export function BetActions({
   }
 
   function handleChangeBetValue(e: ChangeEvent<HTMLInputElement>) {
-    // if (!isAuth || isLoading) return
+    if (!isAuth || isLoading) return
     e.preventDefault()
     const value = +e.target.value
     const newBetValue = value // >= currentBalance ? currentBalance : value
@@ -135,7 +135,7 @@ export function BetActions({
               disabled={isLoading}
               className="block rounded-md bg-purple px-2 py-4 text-sm font-bold leading-none text-background transition-colors hover:bg-purpleDark focus:outline-none focus:ring-1 focus:ring-purple focus:ring-offset-1 focus:ring-offset-primary disabled:bg-gray-500 md:hidden"
             >
-              Apostar
+              Start
             </button>
           </div>
           <select

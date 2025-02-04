@@ -31,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       IsPlinkoMaxDailyLossLimitReached,
       IsPlinkoMaxWeeklyWinLimitReached,
       IsPlinkoMaxWeeklyLossLimitReached,
-      MaxBetPlinko: maxBet
+      MaxBetPlinko: maxBet = 100 // TODO: check if we should keep this
     } = response.data
     const isLimitReached =
       IsPlinkoMaxDailyWinLimitReached ||
