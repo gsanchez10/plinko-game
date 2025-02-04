@@ -3,8 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { amount, token } = req.body
-  console.log('🚀 ~ req:', await req.body)
-  console.log('🚀 ~ token:', token)
   const description = amount >= 0 ? 'winnings' : 'loss'
 
   const reference = 'PLINKO'

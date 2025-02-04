@@ -98,14 +98,13 @@ export const useAuthStore = create<State>((setState, getState) => ({
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
       // await getState().setBalanceOnDatabase(getState().wallet.balance + amount)
-      const response = await fetch('/api/insertPlayerTransaction', {
+      await fetch('/api/insertPlayerTransaction', {
         method: 'POST',
         body: JSON.stringify({ token, amount }),
         headers: {
           'Content-Type': 'application/json'
         }
       })
-      console.log("🚀 ~ incrementBalance: ~ response:", response)
       setState(state => ({ ...state, isWalletLoading: false, user: { ...state.user, balance: state.user.balance + amount } }))
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
@@ -116,9 +115,9 @@ export const useAuthStore = create<State>((setState, getState) => ({
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
       // await getState().setBalanceOnDatabase(getState().wallet.balance - amount)
-      const response = await fetch('/api/insertPlayerTransaction', {
+      await fetch('/api/insertPlayerTransaction', {
         method: 'POST',
-        body: JSON.stringify({ token, amount }),
+        body: JSON.stringify({ token, amount: -amount }),
         headers: {
           'Content-Type': 'application/json'
         }
