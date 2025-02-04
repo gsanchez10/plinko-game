@@ -33,24 +33,6 @@ interface State {
   decrementBalance: (token: string, amount: number) => Promise<void>
 }
 
-const getLimitMessage = (
-  isMinesMaxDailyWinLimitReached: boolean,
-  isMinesMaxDailyLossLimitReached: boolean,
-  isMinesMaxWeeklyWinLimitReached: boolean,
-  isMinesMaxWeeklyLossLimitReached: boolean
-) => {
-  if (isMinesMaxDailyWinLimitReached) {
-    return 'Max Daily Win Limit'
-  } else if (isMinesMaxDailyLossLimitReached) {
-    return 'Max Daily Loss Limit'
-  } else if (isMinesMaxWeeklyWinLimitReached) {
-    return 'Max Weekly Win Limit'
-  } else if (isMinesMaxWeeklyLossLimitReached) {
-    return 'Max Weekly Loss Limit'
-  }
-  return ''
-}
-
 function storeUser(user: User) {
   localStorage.setItem('uid', user.id)
   localStorage.setItem('name', user.name)
@@ -97,7 +79,6 @@ export const useAuthStore = create<State>((setState, getState) => ({
   incrementBalance: async (token: string, amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
-      // await getState().setBalanceOnDatabase(getState().wallet.balance + amount)
       await fetch('/api/insertPlayerTransaction', {
         method: 'POST',
         body: JSON.stringify({ token, amount }),
@@ -148,74 +129,8 @@ export const useAuthStore = create<State>((setState, getState) => ({
         )
       } catch (error) {
         console.error('Error getting player balance:', error)
-        // return null
       }
       setState(state => ({ ...state, isLoading: false }))
-      // setState(state => ({ ...state, isAuthLoading: true }))
-      // const newUser = {
-      //   id: '1',
-      //   name: 'Testv',
-      //   email: 'testv@email.com',
-      //   profilePic: ''
-      // }
-      // // storeUser(newUser)
-      // setState(
-      //   produce<State>(state => {
-      //     state.user = newUser
-      //     state.isAuth = true
-      //     state.isAuthLoading = false
-      //     state.wallet.balance = 100000
-      //   })
-      // )
-      // setState(state => ({ ...state, isLoading: false }))
-      // setState(state => ({ ...state, isAuthLoading: true }))
-      // const url = process.env.BET_MASTER_API_URL + '/PlayerExt/GetPlayerInfo'
-      // try {
-      //   const response = await fetch(url, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: `Token ${token}`
-      //     }
-      //   })
-      //   console.log('🚀 ~ response:', response)
-      //   const {
-      //     IsMinesMaxDailyWinLimitReached,
-      //     IsMinesMaxDailyLossLimitReached,
-      //     IsMinesMaxWeeklyWinLimitReached,
-      //     IsMinesMaxWeeklyLossLimitReached,
-      //     MaxBetMines: maxBet
-      //   } = response.data
-      //   const isLimitReached =
-      //     IsMinesMaxDailyWinLimitReached ||
-      //     IsMinesMaxDailyLossLimitReached ||
-      //     IsMinesMaxWeeklyWinLimitReached ||
-      //     IsMinesMaxWeeklyLossLimitReached
-      //   const user = {
-      //     balance: response.data.Available,
-      //     player: response.data.Player,
-      //     isLimitReached,
-      //     maxBet,
-      //     limitReachedMessage: getLimitMessage(
-      //       IsMinesMaxDailyWinLimitReached,
-      //       IsMinesMaxDailyLossLimitReached,
-      //       IsMinesMaxWeeklyWinLimitReached,
-      //       IsMinesMaxWeeklyLossLimitReached
-      //     )
-      //   }
-      //   storeUser(user)
-      //   setState(
-      //     produce<State>(state => {
-      //       state.user = user
-      //       state.isAuth = true
-      //       state.isAuthLoading = false
-      //       state.wallet.balance = 100000
-      //     })
-      //   )
-      // } catch (error) {
-      //   console.error('Error getting player balance:', error)
-      //   return null
-      // }
     } catch (error) {
       toast.error('Ocorreu um erro ao fazer login')
       console.error('signInError', error)
