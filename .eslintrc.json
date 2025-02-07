@@ -67,5 +67,6 @@
         "project": "./tsconfig.json"
       }
     }
-  }
+  },
+  "ignorePatterns": ["node_modules/"]
 }
