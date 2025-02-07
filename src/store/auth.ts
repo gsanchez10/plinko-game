@@ -11,7 +11,7 @@ interface User {
   name: string
   email: string
   profilePic?: string
-  balance: number,
+  balance: number
   maxBet: number
 }
 
@@ -39,11 +39,11 @@ function storeUser(user: User) {
   localStorage.setItem('profilePic', user.profilePic || '')
 }
 
-function clearUser() {
-  localStorage.removeItem('uid')
-  localStorage.removeItem('name')
-  localStorage.removeItem('profilePic')
-}
+// function clearUser() {
+//   localStorage.removeItem('uid')
+//   localStorage.removeItem('name')
+//   localStorage.removeItem('profilePic')
+// }
 
 const userInitialState: User = {
   id: '',
@@ -57,7 +57,8 @@ const walletInitialState: Wallet = {
   balance: 0
 }
 
-export const useAuthStore = create<State>((setState, getState) => ({
+// export const useAuthStore = create<State>((setState, getState) => ({
+export const useAuthStore = create<State>(setState => ({
   user: userInitialState,
   wallet: walletInitialState,
   isAuthLoading: false,
@@ -86,7 +87,11 @@ export const useAuthStore = create<State>((setState, getState) => ({
           'Content-Type': 'application/json'
         }
       })
-      setState(state => ({ ...state, isWalletLoading: false, user: { ...state.user, balance: state.user.balance + amount } }))
+      setState(state => ({
+        ...state,
+        isWalletLoading: false,
+        user: { ...state.user, balance: state.user.balance + amount }
+      }))
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('incrementBalanceError', error)
@@ -103,7 +108,11 @@ export const useAuthStore = create<State>((setState, getState) => ({
           'Content-Type': 'application/json'
         }
       })
-      setState(state => ({ ...state, isWalletLoading: false, user: { ...state.user, balance: state.user.balance - amount } }))
+      setState(state => ({
+        ...state,
+        isWalletLoading: false,
+        user: { ...state.user, balance: state.user.balance - amount }
+      }))
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('decrementBalanceError', error)

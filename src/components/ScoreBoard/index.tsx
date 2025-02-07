@@ -1,6 +1,6 @@
 // import { get, ref } from 'firebase/database'
 // import { database } from 'lib/firebase'
-import { Profile } from 'pages/Profile'
+import { Profile } from 'components/Profile'
 import { ArrowLeft, CircleDashed, Play } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'

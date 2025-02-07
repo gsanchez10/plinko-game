@@ -90,7 +90,7 @@ export function formatPoints(number: number): string {
     ' SepDuoMillies',
     ' OctDuoMillies',
     ' NovemDuoMillies',
-    ' VigintiMillies',
+    ' VigintiMillies'
   ]
 
   for (let i = abbrev.length - 1; i >= 0; i--) {
@@ -109,4 +109,3 @@ export function formatPoints(number: number): string {
 
   return String(newNumber)
 }
-

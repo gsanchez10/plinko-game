@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { User } from 'pages/ScoreBoard/@types/player'
+import { User } from 'components/ScoreBoard/@types/player'
 import { Crown, FinnTheHuman } from 'phosphor-react'
 import { useAuthStore } from 'store/auth'
 import { formatPoints } from 'utils/currencyFormat'
@@ -62,7 +62,7 @@ export function ScoreBoardPlayerItem({
           Clique para ir ao perfil
         </p>
         <p
-          className="text-right font-bold text-sm transition-colors group-hover:text-transparent lg:w-[50ch]  lg:max-w-[50ch] lg:text-lg"
+          className="text-right text-sm font-bold transition-colors group-hover:text-transparent lg:w-[50ch]  lg:max-w-[50ch] lg:text-lg"
           title={String(player.currentBalance)}
         >
           {formatPoints(player.currentBalance)}

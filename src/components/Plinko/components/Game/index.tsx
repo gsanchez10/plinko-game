@@ -9,6 +9,7 @@ import {
   Runner,
   World
 } from 'matter-js'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuthStore } from 'store/auth'
 import { useGameStore } from 'store/game'
@@ -23,9 +24,46 @@ import {
   getMultiplierByLinesQnt,
   getMultiplierSound
 } from './config/multipliers'
-import { useRouter } from 'next/router'
 
 const ballAudio = '/assets/sounds/ball.wav'
+
+interface PinsConfig {
+  startPins: number
+  pinGap: number
+  pinSize: number
+}
+
+const generatePins = (
+  lines: number,
+  pinsConfig: PinsConfig,
+  worldWidth: number
+): Body[] => {
+  const pins: Body[] = []
+  for (let l = 0; l < lines; l++) {
+    const linePins = pinsConfig.startPins + l
+    const lineWidth = linePins * pinsConfig.pinGap
+    for (let i = 0; i < linePins; i++) {
+      const pinX =
+        worldWidth / 2 -
+        lineWidth / 2 +
+        i * pinsConfig.pinGap +
+        pinsConfig.pinGap / 2
+
+      const pinY =
+        worldWidth / lines + l * pinsConfig.pinGap + pinsConfig.pinGap
+
+      const pin = Bodies.circle(pinX, pinY, pinsConfig.pinSize, {
+        label: `pin-${i}`,
+        render: {
+          fillStyle: '#F5DCFF'
+        },
+        isStatic: true
+      })
+      pins.push(pin)
+    }
+  }
+  return pins
+}
 
 export function Game() {
   // #region States
@@ -91,31 +129,7 @@ export function Game() {
     }
   }, [lines])
 
-  const pins: Body[] = []
-
-  for (let l = 0; l < lines; l++) {
-    const linePins = pinsConfig.startPins + l
-    const lineWidth = linePins * pinsConfig.pinGap
-    for (let i = 0; i < linePins; i++) {
-      const pinX =
-        worldWidth / 2 -
-        lineWidth / 2 +
-        i * pinsConfig.pinGap +
-        pinsConfig.pinGap / 2
-
-      const pinY =
-        worldWidth / lines + l * pinsConfig.pinGap + pinsConfig.pinGap
-
-      const pin = Bodies.circle(pinX, pinY, pinsConfig.pinSize, {
-        label: `pin-${i}`,
-        render: {
-          fillStyle: '#F5DCFF'
-        },
-        isStatic: true
-      })
-      pins.push(pin)
-    }
-  }
+  const pins: Body[] = generatePins(lines, pinsConfig, worldWidth)
 
   function addInGameBall() {
     if (inGameBallsCount > 15) return
@@ -175,9 +189,9 @@ export function Game() {
   )
   const rightWall = Bodies.rectangle(
     worldWidth -
-    pinsConfig.pinSize * pinsConfig.pinGap -
-    pinsConfig.pinGap -
-    pinsConfig.pinGap / 2,
+      pinsConfig.pinSize * pinsConfig.pinGap -
+      pinsConfig.pinGap -
+      pinsConfig.pinGap / 2,
     worldWidth / 2 - pinsConfig.pinSize - 30,
     worldWidth * 2,
     40,

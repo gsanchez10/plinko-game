@@ -1,14 +1,24 @@
+import { useRouter } from 'next/router'
 import { CurrencyDollarSimple } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
 import { useAuthStore } from 'store/auth'
 
 import { LinesType } from '../../@types'
-import { useRouter } from 'next/router'
 
 interface PlinkoBetActions {
   onRunBet: (betValue: number) => void
   onChangeLines: (lines: LinesType) => void
   inGameBallsCount: number
+}
+
+const MAX_LINES = 16
+
+const getLinesOptions = (maxLinesQnt: number) => {
+  const linesOptions: number[] = []
+  for (let i = 8; i <= maxLinesQnt; i++) {
+    linesOptions.push(i)
+  }
+  return linesOptions
 }
 
 export function BetActions({
@@ -22,13 +32,9 @@ export function BetActions({
   const decrementCurrentBalance = useAuthStore(state => state.decrementBalance)
   const isAuth = useAuthStore(state => state.isAuth)
   const [betValue, setBetValue] = useState(0)
-  const maxLinesQnt = 16
-  const linesOptions: number[] = []
+  const linesOptions: number[] = getLinesOptions(MAX_LINES)
   const router = useRouter()
   const { token } = router.query
-  for (let i = 8; i <= maxLinesQnt; i++) {
-    linesOptions.push(i)
-  }
 
   function handleChangeBetValue(e: ChangeEvent<HTMLInputElement>) {
     if (!isAuth || isLoading) return

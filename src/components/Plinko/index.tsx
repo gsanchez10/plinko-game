@@ -1,12 +1,12 @@
-import { Navbar } from '../../components/Navbar'
-import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect } from 'react'
 import { useAuthStore } from 'store/auth'
 import { useGameStore } from 'store/game'
 
 import { Footer } from '../../components/Footer'
 import { Loading } from '../../components/Loading'
+import { Navbar } from '../../components/Navbar'
 import { Game } from './components/Game'
-import { useRouter } from 'next/router'
 
 export function PlinkoGamePage() {
   const isLoading = useAuthStore(state => state.isAuthLoading)
@@ -14,23 +14,26 @@ export function PlinkoGamePage() {
   const signIn = useAuthStore(state => state.signIn)
   const router = useRouter()
   const { token } = router.query
+  const gamesRunning = useGameStore(state => state.gamesRunning)
   useEffect(() => {
     signIn(token as string)
   }, [token, signIn])
-  const alertUser = (e: BeforeUnloadEvent) => {
-    if (gamesRunning > 0) {
-      e.preventDefault()
-      alert('Do you really want to leave?')
-      e.returnValue = ''
-    }
-  }
-  const gamesRunning = useGameStore(state => state.gamesRunning)
+  const alertUser = useCallback(
+    (e: BeforeUnloadEvent) => {
+      if (gamesRunning > 0) {
+        e.preventDefault()
+        alert('Do you really want to leave?')
+        e.returnValue = ''
+      }
+    },
+    [gamesRunning]
+  )
   useEffect(() => {
     window.addEventListener('beforeunload', alertUser)
     return () => {
       window.removeEventListener('beforeunload', alertUser)
     }
-  }, [gamesRunning])
+  }, [alertUser, gamesRunning])
   if (!isAuth) {
     return null
   }

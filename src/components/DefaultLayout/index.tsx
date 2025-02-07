@@ -12,8 +12,8 @@ export function DefaultLayout() {
   const isLoading = useAuthStore(state => state.isAuthLoading)
   const signIn = useAuthStore(state => state.signIn)
   useEffect(() => {
-    signIn()
-  }, [])
+    signIn('')
+  }, [signIn])
 
   return (
     <div className="relative flex min-h-screen w-full flex-col justify-between bg-background">
