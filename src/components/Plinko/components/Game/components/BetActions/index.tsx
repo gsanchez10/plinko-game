@@ -1,14 +1,18 @@
 import { useRouter } from 'next/router'
 import { CurrencyDollarSimple } from 'phosphor-react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import Modal from 'react-modal'
 import { useAuthStore } from 'store/auth'
 
 import { LinesType } from '../../@types'
+
+Modal.setAppElement('#__next') // Set the app element for accessibility
 
 interface PlinkoBetActions {
   onRunBet: (betValue: number) => void
   onChangeLines: (lines: LinesType) => void
   inGameBallsCount: number
+  cancelBet: () => void
 }
 
 const MAX_LINES = 16
@@ -24,11 +28,15 @@ const getLinesOptions = (maxLinesQnt: number) => {
 export function BetActions({
   onRunBet,
   onChangeLines,
-  inGameBallsCount
+  inGameBallsCount,
+  cancelBet
 }: PlinkoBetActions) {
   const isLoading = useAuthStore(state => state.isWalletLoading)
   const currentBalance = useAuthStore(state => state.wallet.balance)
   const maxBet = useAuthStore(state => state.user.maxBet)
+  const limitReachedMessage = useAuthStore(
+    state => state.user.limitReachedMessage
+  )
   const decrementCurrentBalance = useAuthStore(state => state.decrementBalance)
   const isAuth = useAuthStore(state => state.isAuth)
   const [betValue, setBetValue] = useState(0)
@@ -86,6 +94,12 @@ export function BetActions({
     if (betValue <= 0) return
     await decrementCurrentBalance(token as string, betValue)
   }
+
+  useEffect(() => {
+    if (limitReachedMessage) {
+      cancelBet()
+    }
+  }, [cancelBet, limitReachedMessage])
 
   return (
     <div className="relative h-1/2 w-full flex-1 px-4 py-8">
@@ -166,6 +180,17 @@ export function BetActions({
           Start
         </button>
       </div>
+      <Modal
+        isOpen={!!limitReachedMessage}
+        contentLabel="Limit Reached"
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="w-64 rounded-lg bg-white p-4 shadow-lg">
+          <h2 className="mb-2 text-lg font-bold">Limit Reached</h2>
+          <p className="mb-4 text-sm text-gray-700">{limitReachedMessage}</p>
+        </div>
+      </Modal>
     </div>
   )
 }

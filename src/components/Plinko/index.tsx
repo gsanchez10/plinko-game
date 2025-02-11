@@ -9,9 +9,9 @@ import { Navbar } from '../../components/Navbar'
 import { Game } from './components/Game'
 
 export function PlinkoGamePage() {
-  const isLoading = useAuthStore(state => state.isAuthLoading)
   const isAuth = useAuthStore(state => state.isAuth)
   const signIn = useAuthStore(state => state.signIn)
+  const isAuthLoading = useAuthStore(state => state.isAuthLoading)
   const router = useRouter()
   const { token } = router.query
   const gamesRunning = useGameStore(state => state.gamesRunning)
@@ -34,14 +34,14 @@ export function PlinkoGamePage() {
       window.removeEventListener('beforeunload', alertUser)
     }
   }, [alertUser, gamesRunning])
-  if (!isAuth) {
+  if (!isAuth && !isAuthLoading) {
     return null
   }
   return (
     <div className="relative flex min-h-screen w-full flex-col justify-between bg-background">
       <Navbar />
       <div className="flex h-full w-full max-w-[1400px] flex-1 overflow-auto overflow-x-hidden pt-4 lg:mx-auto">
-        <div className="flex-1">{isLoading ? <Loading /> : <Game />}</div>
+        <div className="flex-1">{isAuthLoading ? <Loading /> : <Game />}</div>
       </div>
       <Footer />
     </div>

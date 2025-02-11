@@ -65,6 +65,8 @@ const generatePins = (
   return pins
 }
 
+const runner = Runner.create()
+
 export function Game() {
   // #region States
   const incrementCurrentBalance = useAuthStore(state => state.incrementBalance)
@@ -93,6 +95,10 @@ export function Game() {
   const worldHeight: number = worldConfig.height
   // #endregion
 
+  const cancelBet = useCallback(() => {
+    Runner.stop(runner)
+  }, [])
+
   useEffect(() => {
     engine.gravity.y = engineConfig.engineGravity
     const element = document.getElementById('plinko')
@@ -118,7 +124,6 @@ export function Game() {
       },
       engine
     })
-    const runner = Runner.create()
     Runner.run(runner, engine)
     Render.run(render)
     return () => {
@@ -288,6 +293,7 @@ export function Game() {
         inGameBallsCount={inGameBallsCount}
         onChangeLines={setLines}
         onRunBet={bet}
+        cancelBet={cancelBet}
       />
       <MultiplierHistory multiplierHistory={lastMultipliers} />
       <div className="flex flex-1 items-center justify-center">

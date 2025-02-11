@@ -13,6 +13,7 @@ interface User {
   profilePic?: string
   balance: number
   maxBet: number
+  limitReachedMessage?: string
 }
 
 interface Wallet {
@@ -23,10 +24,11 @@ interface State {
   user: User
   wallet: Wallet
   isAuth: boolean
-  signIn: (token: string) => Promise<void>
+  signIn: (token: string, loadingState?: string) => Promise<void>
   // signOut: () => Promise<void>
   setUser: (user: User) => void
   isAuthLoading: boolean
+  isRefreshingData: boolean
   isWalletLoading: boolean
   setBalance: (balance: number) => void
   incrementBalance: (token: string, amount: number) => Promise<void>
@@ -57,11 +59,14 @@ const walletInitialState: Wallet = {
   balance: 0
 }
 
+const IS_REFRESHING_DATA = 'isRefreshingData'
+
 // export const useAuthStore = create<State>((setState, getState) => ({
-export const useAuthStore = create<State>(setState => ({
+export const useAuthStore = create<State>((setState, getState) => ({
   user: userInitialState,
   wallet: walletInitialState,
   isAuthLoading: false,
+  isRefreshingData: false,
   isWalletLoading: false,
   isAuth: false,
   setBalance: (balance: number) => {
@@ -80,6 +85,7 @@ export const useAuthStore = create<State>(setState => ({
   incrementBalance: async (token: string, amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
+      const refreshUser = getState().signIn
       await fetch('/api/insertPlayerTransaction', {
         method: 'POST',
         body: JSON.stringify({ token, amount }),
@@ -92,6 +98,7 @@ export const useAuthStore = create<State>(setState => ({
         isWalletLoading: false,
         user: { ...state.user, balance: state.user.balance + amount }
       }))
+      await refreshUser(token, IS_REFRESHING_DATA)
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('incrementBalanceError', error)
@@ -100,6 +107,7 @@ export const useAuthStore = create<State>(setState => ({
   decrementBalance: async (token: string, amount: number) => {
     try {
       setState(state => ({ ...state, isWalletLoading: true }))
+      const refreshUser = getState().signIn
       // await getState().setBalanceOnDatabase(getState().wallet.balance - amount)
       await fetch('/api/insertPlayerTransaction', {
         method: 'POST',
@@ -113,17 +121,18 @@ export const useAuthStore = create<State>(setState => ({
         isWalletLoading: false,
         user: { ...state.user, balance: state.user.balance - amount }
       }))
+      await refreshUser(token, IS_REFRESHING_DATA)
     } catch (error) {
       toast.error('Ocorreu um erro ao atualizar o saldo')
       console.error('decrementBalanceError', error)
     }
   },
-  signIn: async (token: string) => {
+  signIn: async (token: string, loadingState = 'isAuthLoading') => {
     if (!token) return
     try {
-      setState(state => ({ ...state, isAuthLoading: true }))
+      setState(state => ({ ...state, [loadingState]: true }))
       try {
-        const response = await fetch(`/api/startGame?token=${token}`, {
+        const response = await fetch(`/api/fetchData?token=${token}`, {
           method: 'POST'
         })
         const user = await response.json()
@@ -132,14 +141,14 @@ export const useAuthStore = create<State>(setState => ({
           produce<State>(state => {
             state.user = user
             state.isAuth = true
-            state.isAuthLoading = false
             state.wallet.balance = user.balance
+            state.user.maxBet = user.maxBet
           })
         )
       } catch (error) {
         console.error('Error getting player balance:', error)
       }
-      setState(state => ({ ...state, isLoading: false }))
+      setState(state => ({ ...state, [loadingState]: false }))
     } catch (error) {
       toast.error('Ocorreu um erro ao fazer login')
       console.error('signInError', error)
