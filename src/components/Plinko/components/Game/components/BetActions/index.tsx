@@ -39,7 +39,8 @@ export function BetActions({
   )
   const decrementCurrentBalance = useAuthStore(state => state.decrementBalance)
   const isAuth = useAuthStore(state => state.isAuth)
-  const [betValue, setBetValue] = useState(0)
+  const [rawBetValue, setBetValue] = useState<number | ''>('')
+  const betValue = rawBetValue as number
   const linesOptions: number[] = getLinesOptions(MAX_LINES)
   const router = useRouter()
   const { token } = router.query
@@ -117,7 +118,7 @@ export function BetActions({
                   <div className="rounded-full bg-purpleDark p-0.5">
                     <CurrencyDollarSimple weight="bold" />
                   </div>
-                  <span>{betValue.toFixed(2)}</span>
+                  <span>{(betValue || 0).toFixed(2)}</span>
                 </div>
               </div>
               <div className="flex items-stretch justify-center shadow-md">
