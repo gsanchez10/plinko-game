@@ -273,7 +273,8 @@ export function Game() {
 
     if (+ballValue <= 0) return
 
-    const newBalance = +ballValue * multiplierValue
+    const transactionResult = +ballValue * multiplierValue
+    const newBalance = transactionResult - +ballValue
     await incrementCurrentBalance(token as string, newBalance)
   }
   async function onBodyCollision(event: IEventCollision<Engine>) {

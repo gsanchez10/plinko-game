@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 import { CurrencyDollarSimple } from 'phosphor-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 import Modal from 'react-modal'
@@ -37,13 +37,13 @@ export function BetActions({
   const limitReachedMessage = useAuthStore(
     state => state.user.limitReachedMessage
   )
-  const decrementCurrentBalance = useAuthStore(state => state.decrementBalance)
+  // const decrementCurrentBalance = useAuthStore(state => state.decrementBalance)
   const isAuth = useAuthStore(state => state.isAuth)
   const [rawBetValue, setBetValue] = useState<number | ''>('')
   const betValue = rawBetValue as number
   const linesOptions: number[] = getLinesOptions(MAX_LINES)
-  const router = useRouter()
-  const { token } = router.query
+  // const router = useRouter()
+  // const { token } = router.query
 
   function handleChangeBetValue(e: ChangeEvent<HTMLInputElement>) {
     if (!isAuth || isLoading) return
@@ -92,8 +92,8 @@ export function BetActions({
       return
     }
     onRunBet(betValue)
-    if (betValue <= 0) return
-    await decrementCurrentBalance(token as string, betValue)
+    // if (betValue <= 0) return
+    // await decrementCurrentBalance(token as string, betValue)
   }
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export function BetActions({
               disabled={isLoading}
               className="block rounded-md bg-purple px-2 py-4 text-sm font-bold leading-none text-background transition-colors hover:bg-purpleDark focus:outline-none focus:ring-1 focus:ring-purple focus:ring-offset-1 focus:ring-offset-primary disabled:bg-gray-500 md:hidden"
             >
-              Start
+              Drop Ball
             </button>
           </div>
           <select
@@ -178,7 +178,7 @@ export function BetActions({
           disabled={isLoading}
           className="hidden rounded-md bg-purple px-6 py-5 font-bold leading-none text-background transition-colors hover:bg-purpleDark focus:outline-none focus:ring-1 focus:ring-purple focus:ring-offset-1 focus:ring-offset-primary disabled:bg-gray-500 md:visible md:block"
         >
-          Start
+          Drop Ball
         </button>
       </div>
       <Modal
