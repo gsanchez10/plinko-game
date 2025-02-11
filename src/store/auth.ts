@@ -136,15 +136,17 @@ export const useAuthStore = create<State>((setState, getState) => ({
           method: 'POST'
         })
         const user = await response.json()
-        storeUser(user)
-        setState(
-          produce<State>(state => {
-            state.user = user
-            state.isAuth = true
-            state.wallet.balance = user.balance
-            state.user.maxBet = user.maxBet
-          })
-        )
+        if (response.ok) {
+          storeUser(user)
+          setState(
+            produce<State>(state => {
+              state.user = user
+              state.isAuth = true
+              state.wallet.balance = user.balance
+              state.user.maxBet = user.maxBet
+            })
+          )
+        }
       } catch (error) {
         console.error('Error getting player balance:', error)
       }
