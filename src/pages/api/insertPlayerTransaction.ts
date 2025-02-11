@@ -20,7 +20,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const response = await axios.post(url, data, {
       headers: { Authorization: `Token ${token}` }
     })
-    console.log('🚀 ~ response:', response.data)
     res.status(200).json(response.data)
   } catch (error) {
     console.error('Error inserting player transaction:', error)
