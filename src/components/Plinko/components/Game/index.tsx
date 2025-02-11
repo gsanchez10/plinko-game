@@ -90,7 +90,10 @@ export function Game() {
   const router = useRouter()
   const { token } = router.query
 
-  const worldWidth: number = worldConfig.width
+  const worldWidth: number =
+    window.innerWidth < worldConfig.width
+      ? window.innerWidth
+      : worldConfig.width
 
   const worldHeight: number = worldConfig.height
   // #endregion
