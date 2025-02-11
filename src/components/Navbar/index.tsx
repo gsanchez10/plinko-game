@@ -37,7 +37,7 @@ export function Navbar() {
                 <Gift size="32" weight="fill" />
               </Link>
             )} */}
-            <WalletCard balance={currentBalance} showFormatted />
+            <WalletCard balance={currentBalance} />
           </div>
         )}
       </div>
