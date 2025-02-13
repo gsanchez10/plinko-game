@@ -4,27 +4,27 @@ const path = require('path')
 
 const multipliers = [
   { value: 0.2, background: '#f7eaff', color: '#0f212e' },
-  { value: 0.3, background: '#f5dcff', color: '#0f212e' },
+  { value: 0.25, background: '#f5dcff', color: '#0f212e' },
   { value: 0.35, background: '#f4d6ff', color: '#0f212e' },
   { value: 0.8, background: '#f0c1ff', color: '#0f212e' },
-  { value: 0.5, background: '#f2ceff', color: '#0f212e' },
+  { value: 0.45, background: '#f2ceff', color: '#0f212e' },
   { value: 1, background: '#edbcff', color: '#0f212e' },
   { value: 1.1, background: '#e9b3ff', color: '#0f212e' },
-  { value: 1.5, background: '#e193ff', color: '#0f212e' },
+  { value: 1.3, background: '#e193ff', color: '#0f212e' },
   { value: 2, background: '#e6aaff', color: '#0f212e' },
-  { value: 3, background: '#cf65f8', color: '#0f212e' },
+  { value: 2.8, background: '#cf65f8', color: '#0f212e' },
   { value: 3.5, background: '#c44bff', color: '#eee' },
-  { value: 5, background: '#cc44ff', color: '#eee' },
+  { value: 4.5, background: '#cc44ff', color: '#eee' },
   { value: 7, background: '#cf2bff', color: '#eee' },
-  { value: 10, background: '#c52bff', color: '#eee' },
+  { value: 9, background: '#c52bff', color: '#eee' },
   { value: 15, background: '#b82bff', color: '#eee' },
   { value: 18, background: '#b02bff', color: '#eee' },
   { value: 25, background: '#8814b1 ', color: '#eee' },
   { value: 33, background: '#9d27b3', color: '#eee' },
-  { value: 41, background: '#8d27b3', color: '#eee' },
+  { value: 35, background: '#8d27b3', color: '#eee' },
   { value: 75, background: '#7f06ac', color: '#eee' },
   { value: 88, background: '#7f06ab', color: '#eee' },
-  { value: 110, background: '#7f00ae', color: '#eee' }
+  { value: 90, background: '#7f00ae', color: '#eee' }
 ]
 
 const generateSVG = (

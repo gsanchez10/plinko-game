@@ -7,75 +7,56 @@ const multiplierGood = '/assets/sounds/multiplier-good.wav'
 const multiplierLow = '/assets/sounds/multiplier-low.wav'
 const multiplierRegular = '/assets/sounds/multiplier-regular.wav'
 
-const multiplier0dot3Img = '/assets/img/multipliers/multiplier-0.3.svg'
-const multiplier0dot5Img = '/assets/img/multipliers/multiplier-0.5.svg'
-const multiplier1dot5Img = '/assets/img/multipliers/multiplier-1.5.svg'
+const multiplier0dot25Img = '/assets/img/multipliers/multiplier-0.25.svg'
+const multiplier0dot45Img = '/assets/img/multipliers/multiplier-0.45.svg'
+const multiplier1dot3Img = '/assets/img/multipliers/multiplier-1.3.svg'
 const multiplier1Img = '/assets/img/multipliers/multiplier-1.svg'
-const multiplier10Img = '/assets/img/multipliers/multiplier-10.svg'
-const multiplier110Img = '/assets/img/multipliers/multiplier-110.svg'
+const multiplier2Img = '/assets/img/multipliers/multiplier-2.svg'
+const multiplier9Img = '/assets/img/multipliers/multiplier-9.svg'
+const multiplier90Img = '/assets/img/multipliers/multiplier-90.svg'
 const multiplier15Img = '/assets/img/multipliers/multiplier-15.svg'
 const multiplier18Img = '/assets/img/multipliers/multiplier-18.svg'
-const multiplier2Img = '/assets/img/multipliers/multiplier-2.svg'
+const multiplier2dot8Img = '/assets/img/multipliers/multiplier-2.8.svg'
 const multiplier25Img = '/assets/img/multipliers/multiplier-25.svg'
-const multiplier3Img = '/assets/img/multipliers/multiplier-3.svg'
+const multiplier4dot5Img = '/assets/img/multipliers/multiplier-4.5.svg'
 const multiplier33Img = '/assets/img/multipliers/multiplier-33.svg'
-const multiplier41Img = '/assets/img/multipliers/multiplier-41.svg'
-const multiplier5Img = '/assets/img/multipliers/multiplier-5.svg'
+const multiplier35Img = '/assets/img/multipliers/multiplier-35.svg'
 const multiplier88Img = '/assets/img/multipliers/multiplier-88.svg'
-const multiplier75Img = '/assets/img/multipliers/multiplier-75.svg'
-const multiplier7Img = '/assets/img/multipliers/multiplier-7.svg'
-const multiplier3dot5Img = '/assets/img/multipliers/multiplier-3.5.svg'
-const multiplier1dot1Img = '/assets/img/multipliers/multiplier-1.1.svg'
-const multiplier0dot8Img = '/assets/img/multipliers/multiplier-0.8.svg'
-const multiplier0dot35Img = '/assets/img/multipliers/multiplier-0.35.svg'
-const multiplier0dot2Img = '/assets/img/multipliers/multiplier-0.2.svg'
 
 // multiplierSoundEffects
 const multiplierSounds = {
-  0.2: multiplierLow,
-  0.3: multiplierLow,
-  0.35: multiplierLow,
-  0.8: multiplierLow,
-  0.5: multiplierLow,
-  1: multiplierRegular,
-  1.1: multiplierRegular,
-  1.5: multiplierRegular,
-  2: multiplierRegular,
-  3: multiplierRegular,
-  3.5: multiplierRegular,
-  5: multiplierGood,
-  7: multiplierGood,
-  10: multiplierGood,
-  15: multiplierBest,
-  18: multiplierBest,
-  25: multiplierBest,
-  33: multiplierBest,
-  41: multiplierBest,
-  75: multiplierBest,
+  90: multiplierBest,
   88: multiplierBest,
-  110: multiplierBest
+  35: multiplierBest,
+  33: multiplierBest,
+  25: multiplierBest,
+  18: multiplierGood,
+  15: multiplierGood,
+  9: multiplierGood,
+  4.5: multiplierGood,
+  2.8: multiplierRegular,
+  2: multiplierRegular,
+  1.3: multiplierRegular,
+  1: multiplierRegular,
+  0.45: multiplierLow,
+  0.25: multiplierLow
 } as const
 
 const multipliers = {
-  110: {
-    label: 'block-110',
+  90: {
+    label: 'block-90',
     sound: multiplierBest,
-    img: multiplier110Img
+    img: multiplier90Img
   },
   88: {
     label: 'block-88',
     sound: multiplierBest,
     img: multiplier88Img
   },
-  75: {
-    label: 'block-75',
+  35: {
+    label: 'block-35',
     sound: multiplierBest,
-    img: multiplier75Img
-  },
-  41: {
-    label: 'block-41',
-    sound: multiplierBest,
-    img: multiplier41Img
+    img: multiplier35Img
   },
   33: {
     label: 'block-33',
@@ -97,75 +78,45 @@ const multipliers = {
     sound: multiplierGood,
     img: multiplier15Img
   },
-  10: {
-    label: 'block-10',
+  9: {
+    label: 'block-9',
     sound: multiplierGood,
-    img: multiplier10Img
+    img: multiplier9Img
   },
-  7: {
-    label: 'block-7',
+  4.5: {
+    label: 'block-4.5',
     sound: multiplierGood,
-    img: multiplier7Img
+    img: multiplier4dot5Img
   },
-  5: {
-    label: 'block-5',
-    sound: multiplierGood,
-    img: multiplier5Img
-  },
-  3.5: {
-    label: 'block-3.5',
+  2.8: {
+    label: 'block-2.8',
     sound: multiplierRegular,
-    img: multiplier3dot5Img
-  },
-  3: {
-    label: 'block-3',
-    sound: multiplierRegular,
-    img: multiplier3Img
+    img: multiplier2dot8Img
   },
   2: {
     label: 'block-2',
     sound: multiplierRegular,
     img: multiplier2Img
   },
-  1.5: {
-    label: 'block-1.5',
+  1.3: {
+    label: 'block-1.3',
     sound: multiplierRegular,
-    img: multiplier1dot5Img
-  },
-  1.1: {
-    label: 'block-1.1',
-    sound: multiplierRegular,
-    img: multiplier1dot1Img
+    img: multiplier1dot3Img
   },
   1: {
     label: 'block-1',
     sound: multiplierRegular,
     img: multiplier1Img
   },
-  0.8: {
-    label: 'block-0.8',
+  0.45: {
+    label: 'block-0.45',
     sound: multiplierLow,
-    img: multiplier0dot8Img
+    img: multiplier0dot45Img
   },
-  0.5: {
-    label: 'block-0.5',
+  0.25: {
+    label: 'block-0.25',
     sound: multiplierLow,
-    img: multiplier0dot5Img
-  },
-  0.35: {
-    label: 'block-0.35',
-    sound: multiplierLow,
-    img: multiplier0dot35Img
-  },
-  0.3: {
-    label: 'block-0.3',
-    sound: multiplierLow,
-    img: multiplier0dot3Img
-  },
-  0.2: {
-    label: 'block-0.2',
-    sound: multiplierLow,
-    img: multiplier0dot2Img
+    img: multiplier0dot25Img
   }
 } as const
 
@@ -176,140 +127,140 @@ export function getMultiplier(value: MultipliersType): MultiplierType {
 }
 
 export const multiplyBlocks16Lines = [
-  getMultiplier(75),
-  getMultiplier(25),
-  getMultiplier(7),
-  getMultiplier(3.5),
-  getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.8),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(0.8),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(3.5),
-  getMultiplier(7),
-  getMultiplier(25),
-  getMultiplier(75)
+  getMultiplier(90),
+  getMultiplier(35),
+  getMultiplier(9),
+  getMultiplier(4.5),
+  getMultiplier(2.8),
+  getMultiplier(1.3),
+  getMultiplier(1),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1),
+  getMultiplier(1.3),
+  getMultiplier(2.8),
+  getMultiplier(4.5),
+  getMultiplier(9),
+  getMultiplier(35),
+  getMultiplier(90)
 ]
 
 export const multiplyBlocks15Lines = [
-  getMultiplier(41),
+  getMultiplier(88),
   getMultiplier(18),
-  getMultiplier(10),
-  getMultiplier(3.5),
-  getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(3.5),
-  getMultiplier(10),
+  getMultiplier(9),
+  getMultiplier(4.5),
+  getMultiplier(2.8),
+  getMultiplier(1.3),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1.3),
+  getMultiplier(2.8),
+  getMultiplier(4.5),
+  getMultiplier(9),
   getMultiplier(18),
-  getMultiplier(41)
+  getMultiplier(88)
 ]
 export const multiplyBlocks14Lines = [
-  getMultiplier(25),
+  getMultiplier(35),
   getMultiplier(15),
-  getMultiplier(3.5),
-  getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.8),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(0.8),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(3.5),
+  getMultiplier(4.5),
+  getMultiplier(2.8),
+  getMultiplier(1.3),
+  getMultiplier(1),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1),
+  getMultiplier(1.3),
+  getMultiplier(2.8),
+  getMultiplier(4.5),
   getMultiplier(15),
-  getMultiplier(25)
+  getMultiplier(35)
 ]
 export const multiplyBlocks13Lines = [
-  getMultiplier(25),
+  getMultiplier(35),
   getMultiplier(15),
-  getMultiplier(3.5),
-  getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(3.5),
+  getMultiplier(4.5),
+  getMultiplier(2.8),
+  getMultiplier(1.3),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1.3),
+  getMultiplier(2.8),
+  getMultiplier(4.5),
   getMultiplier(15),
-  getMultiplier(25)
+  getMultiplier(35)
 ]
 export const multiplyBlocks12Lines = [
-  getMultiplier(18),
-  getMultiplier(10),
+  getMultiplier(33),
+  getMultiplier(9),
+  getMultiplier(2.8),
   getMultiplier(2),
+  getMultiplier(1.3),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1.3),
   getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(2),
-  getMultiplier(10),
-  getMultiplier(18)
+  getMultiplier(2.8),
+  getMultiplier(9),
+  getMultiplier(33)
 ]
 export const multiplyBlocks11Lines = [
-  getMultiplier(15),
-  getMultiplier(3.5),
+  getMultiplier(25),
+  getMultiplier(4.5),
+  getMultiplier(2.8),
   getMultiplier(2),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
   getMultiplier(2),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(2),
-  getMultiplier(2),
-  getMultiplier(3.5),
-  getMultiplier(15)
+  getMultiplier(2.8),
+  getMultiplier(4.5),
+  getMultiplier(25)
 ]
 export const multiplyBlocks10Lines = [
-  getMultiplier(15),
-  getMultiplier(3.5),
+  getMultiplier(25),
+  getMultiplier(4.5),
   getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(1.1),
+  getMultiplier(1.3),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1.3),
   getMultiplier(2),
-  getMultiplier(3.5),
-  getMultiplier(15)
+  getMultiplier(4.5),
+  getMultiplier(25)
 ]
 export const multiplyBlocks9Lines = [
-  getMultiplier(7),
-  getMultiplier(3.5),
+  getMultiplier(9),
+  getMultiplier(4.5),
   getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.2),
-  getMultiplier(0.2),
-  getMultiplier(1.1),
+  getMultiplier(1.3),
+  getMultiplier(0.25),
+  getMultiplier(0.25),
+  getMultiplier(1.3),
   getMultiplier(2),
-  getMultiplier(3.5),
-  getMultiplier(7)
+  getMultiplier(4.5),
+  getMultiplier(9)
 ]
 export const multiplyBlocks8Lines = [
-  getMultiplier(3.5),
-  getMultiplier(2),
-  getMultiplier(1.1),
-  getMultiplier(0.35),
-  getMultiplier(0.2),
-  getMultiplier(0.35),
-  getMultiplier(1.1),
-  getMultiplier(2),
-  getMultiplier(3.5)
+  getMultiplier(4.5),
+  getMultiplier(2.8),
+  getMultiplier(1.3),
+  getMultiplier(0.45),
+  getMultiplier(0.25),
+  getMultiplier(0.45),
+  getMultiplier(1.3),
+  getMultiplier(2.8),
+  getMultiplier(4.5)
 ]
 
 export const multiplyBlocksByLinesQnt = {
