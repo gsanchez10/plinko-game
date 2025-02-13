@@ -65,7 +65,7 @@ const IS_REFRESHING_DATA = 'isRefreshingData'
 export const useAuthStore = create<State>((setState, getState) => ({
   user: userInitialState,
   wallet: walletInitialState,
-  isAuthLoading: false,
+  isAuthLoading: true,
   isRefreshingData: false,
   isWalletLoading: false,
   isAuth: false,

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
+import Modal from 'react-modal'
 import { useAuthStore } from 'store/auth'
 import { useGameStore } from 'store/game'
 
@@ -34,15 +35,30 @@ export function PlinkoGamePage() {
       window.removeEventListener('beforeunload', alertUser)
     }
   }, [alertUser, gamesRunning])
-  if (!isAuth && !isAuthLoading) {
-    return null
-  }
-  return (
-    <div className="relative flex min-h-screen w-full flex-col justify-between bg-background">
-      <Navbar />
+  const content =
+    !isAuth && !isAuthLoading ? (
+      <Modal
+        isOpen
+        contentLabel="Unauthorized"
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="w-64 rounded-lg bg-white p-4 shadow-lg">
+          <h2 className="mb-2 text-lg font-bold">
+            You need to be logged in to play
+          </h2>
+        </div>
+      </Modal>
+    ) : (
       <div className="flex h-full w-full max-w-[1400px] flex-1 overflow-auto overflow-x-hidden pt-4 lg:mx-auto">
         <div className="flex-1">{isAuthLoading ? <Loading /> : <Game />}</div>
       </div>
+    )
+
+  return (
+    <div className="relative flex min-h-screen w-full flex-col justify-between bg-background">
+      <Navbar />
+      {content}
       <Footer />
     </div>
   )
