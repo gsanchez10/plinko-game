@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app'
 // import 'react-toastify/dist/ReactToastify.css'
 import '../styles/global.css'
 import { Baloo_2 } from 'next/font/google'
+import Head from 'next/head'
 
 const baloo = Baloo_2({
   subsets: ['latin'],
@@ -16,6 +17,12 @@ const baloo = Baloo_2({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={baloo.className}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </Head>
       <Component {...pageProps} />
       {/* <ToastContainer theme="dark" /> */}
     </div>
