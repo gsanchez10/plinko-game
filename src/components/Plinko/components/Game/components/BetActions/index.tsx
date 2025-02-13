@@ -48,9 +48,15 @@ export function BetActions({
   function handleChangeBetValue(e: ChangeEvent<HTMLInputElement>) {
     if (!isAuth || isLoading) return
     e.preventDefault()
-    const value = +e.target.value
+    const value = e.target.value
     const newBetValue = value // >= currentBalance ? currentBalance : value
-    setBetValue(Math.max(0, Math.min(newBetValue, maxBet, currentBalance)))
+    if (newBetValue === '') {
+      setBetValue('')
+    } else {
+      setBetValue(
+        Math.max(0, Math.min(parseInt(newBetValue), maxBet, currentBalance))
+      )
+    }
   }
 
   function handleChangeLines(e: ChangeEvent<HTMLSelectElement>) {
