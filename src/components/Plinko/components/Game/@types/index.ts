@@ -1,21 +1,19 @@
 export type LinesType = 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16
 
 export type MultiplierValuesType =
-  | 90
-  | 88
-  | 35
+  | 64
+  | 75
   | 33
+  | 25
   | 18
   | 15
-  | 9
-  | 8
-  | 4.5
-  | 2.8
+  | 7
+  | 3.5
   | 2
-  | 1.3
-  | 1
-  | 0.45
-  | 0.25
+  | 1.1
+  | 0.8
+  | 0.35
+  | 0.2
 
 export enum MultiplierColors {
   RED_DARKER = '#ff003f',
@@ -30,21 +28,19 @@ export enum MultiplierColors {
 }
 
 export type MultiplierValues =
-  | 90
-  | 88
-  | 35
+  | 64
+  | 75
   | 33
   | 25
   | 18
   | 15
-  | 9
-  | 4.5
-  | 2.8
+  | 7
+  | 3.5
   | 2
-  | 1.3
-  | 1
-  | 0.45
-  | 0.25
+  | 1.1
+  | 0.8
+  | 0.35
+  | 0.2
 
 type MultiplierLabelType = `block-${MultiplierValues}`
 

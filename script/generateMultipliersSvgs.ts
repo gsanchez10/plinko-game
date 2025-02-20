@@ -24,6 +24,7 @@ const multipliers = [
   { value: 35, background: '#8d27b3', color: '#eee' },
   { value: 75, background: '#7f06ac', color: '#eee' },
   { value: 88, background: '#7f06ab', color: '#eee' },
+  { value: 64, background: '#7f06ab', color: '#eee' },
   { value: 90, background: '#7f00ae', color: '#eee' }
 ]
 
