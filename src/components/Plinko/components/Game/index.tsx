@@ -229,7 +229,7 @@ export function Game() {
   multipliers.forEach(multiplier => {
     const blockSize = 20 // height and width
     const multiplierBody = Bodies.rectangle(
-      lastMultiplierX + 20,
+      lastMultiplierX + pinsConfig.pinGap,
       worldWidth / lines + lines * pinsConfig.pinGap + pinsConfig.pinGap,
       blockSize,
       blockSize,

@@ -2,7 +2,7 @@ import { colors } from 'styles/colors'
 const pins = {
   startPins: 3,
   pinSize: 3,
-  pinGap: 20
+  pinGap: 22
 }
 
 const ball = {
@@ -14,8 +14,8 @@ const engine = {
 }
 
 const world = {
-  width: 390,
-  height: 390
+  width: 440,
+  height: 440
 }
 
 export const config = {
