@@ -1,6 +1,6 @@
+import CustomModal from 'components/CustomModal'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
-import Modal from 'react-modal'
 import { useAuthStore } from 'store/auth'
 import { useGameStore } from 'store/game'
 
@@ -37,7 +37,7 @@ export function PlinkoGamePage() {
   }, [alertUser, gamesRunning])
   const content =
     !isAuth && !isAuthLoading ? (
-      <Modal
+      <CustomModal
         isOpen
         contentLabel="Unauthorized"
         className="fixed inset-0 z-50 flex items-center justify-center"
@@ -48,7 +48,7 @@ export function PlinkoGamePage() {
             You need to be logged in to play
           </h2>
         </div>
-      </Modal>
+      </CustomModal>
     ) : (
       <div className="flex h-full w-full max-w-[1400px] flex-1 overflow-auto overflow-x-hidden pt-4 lg:mx-auto">
         <div className="flex-1">{isAuthLoading ? <Loading /> : <Game />}</div>

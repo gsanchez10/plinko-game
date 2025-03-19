@@ -71,7 +71,7 @@ export function Game() {
   // #region States
   const incrementCurrentBalance = useAuthStore(state => state.incrementBalance)
   const engine = Engine.create()
-  const [lines, setLines] = useState<LinesType>(16)
+  const [lines, setLines] = useState<LinesType>(14)
   const inGameBallsCount = useGameStore(state => state.gamesRunning)
   const incrementInGameBallsCount = useGameStore(
     state => state.incrementGamesRunning
@@ -229,7 +229,7 @@ export function Game() {
   multipliers.forEach(multiplier => {
     const blockSize = 20 // height and width
     const multiplierBody = Bodies.rectangle(
-      lastMultiplierX + 20,
+      lastMultiplierX + pinsConfig.pinGap,
       worldWidth / lines + lines * pinsConfig.pinGap + pinsConfig.pinGap,
       blockSize,
       blockSize,

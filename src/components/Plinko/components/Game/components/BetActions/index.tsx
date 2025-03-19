@@ -1,12 +1,10 @@
 // import { useRouter } from 'next/router'
+import CustomModal from 'components/CustomModal'
 import { CurrencyDollarSimple } from 'phosphor-react'
 import { ChangeEvent, useEffect, useState } from 'react'
-import Modal from 'react-modal'
 import { useAuthStore } from 'store/auth'
 
 import { LinesType } from '../../@types'
-
-Modal.setAppElement('#__next') // Set the app element for accessibility
 
 interface PlinkoBetActions {
   onRunBet: (betValue: number) => void
@@ -187,7 +185,7 @@ export function BetActions({
           Drop Ball
         </button>
       </div>
-      <Modal
+      <CustomModal
         isOpen={!!limitReachedMessage}
         contentLabel="Limit Reached"
         className="fixed inset-0 z-50 flex items-center justify-center"
@@ -197,7 +195,7 @@ export function BetActions({
           <h2 className="mb-2 text-lg font-bold">Limit Reached</h2>
           <p className="mb-4 text-sm text-gray-700">{limitReachedMessage}</p>
         </div>
-      </Modal>
+      </CustomModal>
     </div>
   )
 }
